@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 //Pages
 import Login from "./Login";
+import Signup from "./Signup";
 import Welcome from "./Welcome";
 //Intl
 import { FormattedMessage, injectIntl } from "react-intl";
@@ -11,7 +12,14 @@ import { Background } from "../../components/styledComponents/Background/Backgro
 import { AuthContainer } from "./Welcome/components/styledComponents/AuthContainer/AuthContainer";
 
 const Authentication = (props) => {
-  const [page, setPage] = useState("login");
+  const [page, setPage] = useState("");
+
+  const authPage = localStorage.getItem("authPage");
+
+  useEffect(() => {
+    setPage(authPage);
+    console.log("proslo");
+  }, [authPage]);
 
   return (
     <Background container>
@@ -19,7 +27,11 @@ const Authentication = (props) => {
       <Grid item sm>
         <AuthContainer>
           <Welcome page={page} />
-          {page === "login" && <Login props={props} />}
+          {page === "login" ? (
+            <Login props={props} />
+          ) : (
+            <Signup props={props} />
+          )}
         </AuthContainer>
       </Grid>
       <Grid item sm />

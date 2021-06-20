@@ -10,19 +10,19 @@ import { FormContainer } from "../Welcome/components/styledComponents/FormContai
 import { Input } from "../../../components/styledComponents/Input/Input";
 import { Header } from "../../../components/styledComponents/Header/Header";
 import { SubmitForm } from "../../../components/styledComponents/SubmitForm/SubmitForm";
-import { ForgotPassword } from "./components/styledComponents/ForgotPassword/ForgotPassword";
-import { CheckboxContainer } from "./components/styledComponents/CheckboxContainer/CheckboxContainer";
 import { ButtonContainer } from "../components/styledComponents/ButtonContainer/ButtonContainer";
 import { Text } from "../../../components/styledComponents/Text/Text";
 
-const Login = (props) => {
-  // localStorage.setItem("authPage", "login");
+const Signup = (props) => {
+  // localStorage.setItem("authPage", "signup");
   const authPage = localStorage.getItem("authPage");
 
   //Input
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [checked, setChecked] = useState(false);
   //Loader
   const [isLoading, setIsLoading] = useState(false);
   //Errors
@@ -31,10 +31,12 @@ const Login = (props) => {
   const [errorEmailSwitch, setErrorEmailSwitch] = useState("");
   const [errorPasswordSwitch, setErrorPasswordSwitch] = useState("");
 
-  const loginData = {
+  const signupData = {
+    firstName,
+    lastName,
     email,
+    confirmEmail,
     password,
-    remeberMe: false,
   };
 
   const errors = {
@@ -42,10 +44,6 @@ const Login = (props) => {
     emptyPassword: props.intl.formatMessage({ id: "emptyPassword" }),
     wrongEmail: props.intl.formatMessage({ id: "wrongEmail" }),
     wrongPassword: props.intl.formatMessage({ id: "wrongPassword" }),
-  };
-
-  const handleCheckbox = (event) => {
-    setChecked(event.target.checked);
   };
 
   const handleSubmit = (event) => {
@@ -75,15 +73,42 @@ const Login = (props) => {
   return (
     <FormContainer noValidate onSubmit={handleSubmit}>
       <Header className="formHeader">
-        <FormattedMessage id="login" />
+        <FormattedMessage id="signup" />
       </Header>
       <Text className="formText">
-        <FormattedMessage id="loginSubTextPart1" />
-        <Link onClick={() => localStorage.setItem("authPage", "signup")}>
-          <FormattedMessage id="loginSubTextPart2" />
+        <FormattedMessage id="signupSubTextPart1" />
+        <Link onClick={() => localStorage.setItem("authPage", "login")}>
+          <FormattedMessage id="signupSubTextPart2" />
         </Link>
-        <FormattedMessage id="loginSubTextPart3" />
       </Text>
+      <Input
+        onChange={(event) => setEmail(event.target.value)}
+        required={true}
+        id="firstName"
+        name="firstName"
+        type="firstName"
+        label={props.intl.formatMessage({ id: "firstName" })}
+        error={errorEmailSwitch && errorEmailSwitch}
+        helperText={
+          errorEmail &&
+          (errorEmailSwitch === "empty" ? errors.emptyEmail : errors.wrongEmail)
+        }
+      />
+      <Input
+        onChange={(event) => setPassword(event.target.value)}
+        required={true}
+        id="lastName"
+        name="lastName"
+        type="lastName"
+        label={props.intl.formatMessage({ id: "lastName" })}
+        error={errorPasswordSwitch && errorPasswordSwitch}
+        helperText={
+          errorPassword &&
+          (errorPasswordSwitch === "empty"
+            ? errors.emptyPassword
+            : errors.wrongPassword)
+        }
+      />
       <Input
         onChange={(event) => setEmail(event.target.value)}
         required={true}
@@ -91,6 +116,19 @@ const Login = (props) => {
         name="email"
         type="email"
         label={props.intl.formatMessage({ id: "email" })}
+        error={errorEmailSwitch && errorEmailSwitch}
+        helperText={
+          errorEmail &&
+          (errorEmailSwitch === "empty" ? errors.emptyEmail : errors.wrongEmail)
+        }
+      />
+      <Input
+        onChange={(event) => setEmail(event.target.value)}
+        required={true}
+        id="email"
+        name="email"
+        type="email"
+        label={props.intl.formatMessage({ id: "confirmEmail" })}
         error={errorEmailSwitch && errorEmailSwitch}
         helperText={
           errorEmail &&
@@ -112,18 +150,6 @@ const Login = (props) => {
             : errors.wrongPassword)
         }
       />
-      <CheckboxContainer>
-        <FormControlLabel
-          control={
-            <Checkbox
-              color="primary"
-              onChange={handleCheckbox}
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          }
-          label={props.intl.formatMessage({ id: "rememberMe" })}
-        />
-      </CheckboxContainer>
       <ButtonContainer>
         {isLoading ? (
           <SubmitForm type="submit" variant="contained" disabled>
@@ -135,11 +161,8 @@ const Login = (props) => {
           </SubmitForm>
         )}
       </ButtonContainer>
-      <ForgotPassword>
-        <FormattedMessage id="forgotPassword" />
-      </ForgotPassword>
     </FormContainer>
   );
 };
 
-export default injectIntl(Login);
+export default injectIntl(Signup);

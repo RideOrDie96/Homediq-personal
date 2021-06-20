@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export const Header = styled(Typography)`
   &.formHeader {
-    margin: 2.5em 0 1em 0;
+    margin: 1em 0 1em 0;
     font-size: 22px;
     color: black;
     align-self: center;

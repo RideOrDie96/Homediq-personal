@@ -4,10 +4,11 @@ import styled from "styled-components";
 
 export const Text = styled(Typography)`
   &.formText {
-    font-size: 22px;
-    color: black;
+    font-size: 15px;
+    color: grey;
     align-self: center;
-    font-weight: 600;
+    width: 350px;
+    text-align: center;
   }
 
   &.welcomeText {
