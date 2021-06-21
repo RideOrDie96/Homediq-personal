@@ -20,11 +20,21 @@ const Welcome = (props) => {
       <Header className="welcomeHeader">
         <FormattedMessage id="welcome" />
       </Header>
-      {page === "login" && (
+      {(page === "login" && (
         <Text className="welcomeText">
           <FormattedMessage id="welcomeLoginMessage" />
         </Text>
-      )}
+      )) ||
+        (page === "signup" && (
+          <Text className="welcomeText">
+            <FormattedMessage id="welcomeSignupMessage" />
+          </Text>
+        )) ||
+        (page === "forget" && (
+          <Text className="welcomeText">
+            <FormattedMessage id="welcomeLoginMessage" />
+          </Text>
+        ))}
     </WelcomeContainer>
   );
 };

@@ -30,5 +30,18 @@ export default {
     dot: ". ",
     welcomeSignupMessage:
       "By signing up for a Homed-IQ account, you can activate tests and track results.",
+    emptyFirstName: "You must enter your first name.",
+    emptyLastName: "You must enter your last name.",
+    emptyConfirmEmail: "You must enter an email address again.",
+    noMatchEmail: "The email confirmation does not match your email address.",
+    passwordLength:
+      "The password must have the minimum length of 7 characters.",
+    //RecoverPassword
+    recoverPassword: "Recover Password",
+    recoverPasswordSubTextPart1: "Please enter your email address. ",
+    recoverPasswordSubTextPart2:
+      "You will receive a link to create a new password via email. ",
+    recoverPasswordSubTextPart3: "You remembered your password? ",
+    recoverPasswordSubTextPart4: "Return to the Log in page",
   },
 };

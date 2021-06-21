@@ -10,43 +10,28 @@ import { FormContainer } from "../Welcome/components/styledComponents/FormContai
 import { Input } from "../../../components/styledComponents/Input/Input";
 import { Header } from "../../../components/styledComponents/Header/Header";
 import { SubmitForm } from "../../../components/styledComponents/SubmitForm/SubmitForm";
-import { ForgotPassword } from "./components/styledComponents/ForgotPassword/ForgotPassword";
-import { CheckboxContainer } from "./components/styledComponents/CheckboxContainer/CheckboxContainer";
 import { ButtonContainer } from "../components/styledComponents/ButtonContainer/ButtonContainer";
 import { Text } from "../../../components/styledComponents/Text/Text";
 import { CustomLink } from "../components/styledComponents/CustomLink/CustomLink";
 
-const Login = (props) => {
+const RecoverPassword = (props) => {
   const { pageHandler } = props;
   const authPage = localStorage.getItem("authPage");
-
   //Input
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [checked, setChecked] = useState(false);
   //Loader
   const [isLoading, setIsLoading] = useState(false);
   //Errors
   const [errorEmail, setErrorEmail] = useState(false);
-  const [errorPassword, setErrorPassword] = useState(false);
   const [errorEmailSwitch, setErrorEmailSwitch] = useState("");
-  const [errorPasswordSwitch, setErrorPasswordSwitch] = useState("");
 
-  const loginData = {
+  const recoverData = {
     email,
-    password,
-    remeberMe: false,
   };
 
   const errors = {
     emptyEmail: props.intl.formatMessage({ id: "emptyEmail" }),
-    emptyPassword: props.intl.formatMessage({ id: "emptyPassword" }),
     wrongEmail: props.intl.formatMessage({ id: "wrongEmail" }),
-    wrongPassword: props.intl.formatMessage({ id: "wrongPassword" }),
-  };
-
-  const handleCheckbox = (event) => {
-    setChecked(event.target.checked);
   };
 
   const handleSubmit = (event) => {
@@ -61,29 +46,16 @@ const Login = (props) => {
       setErrorEmailSwitch("");
       setErrorEmail(false);
     }
-    if (password === "") {
-      setErrorPasswordSwitch("empty");
-      setErrorPassword(true);
-    } else if (password !== "123456") {
-      setErrorPasswordSwitch("wrong");
-      setErrorPassword(true);
-    } else {
-      setErrorPasswordSwitch("");
-      setErrorPassword(false);
-    }
   };
 
   return (
     <FormContainer noValidate onSubmit={handleSubmit}>
       <Header className="formHeader">
-        <FormattedMessage id="login" />
+        <FormattedMessage id="recoverPassword" />
       </Header>
       <Text className="formText">
-        <FormattedMessage id="loginSubTextPart1" />
-        <CustomLink onClick={() => pageHandler("signup")}>
-          <FormattedMessage id="loginSubTextPart2" />
-        </CustomLink>
-        <FormattedMessage id="loginSubTextPart3" />
+        <FormattedMessage id="recoverPasswordSubTextPart1" />
+        <FormattedMessage id="recoverPasswordSubTextPart2" />
       </Text>
       <Input
         onChange={(event) => setEmail(event.target.value)}
@@ -98,33 +70,6 @@ const Login = (props) => {
           (errorEmailSwitch === "empty" ? errors.emptyEmail : errors.wrongEmail)
         }
       />
-      <Input
-        onChange={(event) => setPassword(event.target.value)}
-        required={true}
-        id="password"
-        name="password"
-        type="password"
-        label={props.intl.formatMessage({ id: "password" })}
-        error={errorPasswordSwitch && errorPasswordSwitch}
-        helperText={
-          errorPassword &&
-          (errorPasswordSwitch === "empty"
-            ? errors.emptyPassword
-            : errors.wrongPassword)
-        }
-      />
-      <CheckboxContainer>
-        <FormControlLabel
-          control={
-            <Checkbox
-              color="primary"
-              onChange={handleCheckbox}
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          }
-          label={props.intl.formatMessage({ id: "rememberMe" })}
-        />
-      </CheckboxContainer>
       <ButtonContainer>
         {isLoading ? (
           <SubmitForm type="submit" variant="contained" disabled>
@@ -136,11 +81,16 @@ const Login = (props) => {
           </SubmitForm>
         )}
       </ButtonContainer>
-      <ForgotPassword onClick={() => pageHandler("forget")}>
-        <FormattedMessage id="forgotPassword" />
-      </ForgotPassword>
+      <Text className="formText">
+        <FormattedMessage id="recoverPasswordSubTextPart3" />
+        <br />
+        <CustomLink onClick={() => pageHandler("login")}>
+          <FormattedMessage id="recoverPasswordSubTextPart4" />
+        </CustomLink>
+        <FormattedMessage id="dot" />
+      </Text>
     </FormContainer>
   );
 };
 
-export default injectIntl(Login);
+export default injectIntl(RecoverPassword);

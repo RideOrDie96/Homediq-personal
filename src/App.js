@@ -7,9 +7,10 @@ import {
 } from "react-router-dom";
 //Style
 import "./App.css";
+//Components
+import Navbar from "./components/Havbar/index";
 //Pages
 import Authentication from "./pages/Authentication";
-import Login from "./pages/Authentication/Login";
 //i18n
 import { LOCALES } from "./i18n";
 import { I18nProvider } from "./i18n";
@@ -35,6 +36,7 @@ const App = () => {
     <I18nProvider locale={locale}>
       <div className="App">
         <Router>
+          <Navbar fill={"red"} />
           <Switch>
             <Route
               exact

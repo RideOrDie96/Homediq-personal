@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Login from "./Login";
 import Signup from "./Signup";
 import Welcome from "./Welcome";
+import RecoverPassword from "./RecoverPassword";
 //Intl
 import { FormattedMessage, injectIntl } from "react-intl";
 //MUI
@@ -16,22 +17,30 @@ const Authentication = (props) => {
 
   const authPage = localStorage.getItem("authPage");
 
+  const pageHandler = (param) => {
+    localStorage.setItem("authPage", param);
+    setPage(param);
+  };
+
   useEffect(() => {
     setPage(authPage);
-    console.log("proslo");
-  }, [authPage]);
+  }, [page]);
 
   return (
     <Background container>
       <Grid item sm />
       <Grid item sm>
         <AuthContainer>
-          <Welcome page={page} />
-          {page === "login" ? (
-            <Login props={props} />
-          ) : (
-            <Signup props={props} />
-          )}
+          <Welcome page={page} pageHandler={pageHandler} />
+          {(page === "login" && (
+            <Login props={props} pageHandler={pageHandler} />
+          )) ||
+            (page === "signup" && (
+              <Signup props={props} pageHandler={pageHandler} />
+            )) ||
+            (page === "forget" && (
+              <RecoverPassword props={props} pageHandler={pageHandler} />
+            ))}
         </AuthContainer>
       </Grid>
       <Grid item sm />

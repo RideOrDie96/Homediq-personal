@@ -12,9 +12,10 @@ import { Header } from "../../../components/styledComponents/Header/Header";
 import { SubmitForm } from "../../../components/styledComponents/SubmitForm/SubmitForm";
 import { ButtonContainer } from "../components/styledComponents/ButtonContainer/ButtonContainer";
 import { Text } from "../../../components/styledComponents/Text/Text";
+import { CustomLink } from "../components/styledComponents/CustomLink/CustomLink";
 
 const Signup = (props) => {
-  // localStorage.setItem("authPage", "signup");
+  const { pageHandler } = props;
   const authPage = localStorage.getItem("authPage");
 
   //Input
@@ -26,9 +27,15 @@ const Signup = (props) => {
   //Loader
   const [isLoading, setIsLoading] = useState(false);
   //Errors
+  const [errorFirstName, setErrorFirstName] = useState(false);
+  const [errorLastName, setErrorLastName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
+  const [errorConfirmEmail, setErrorConfirmEmail] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
+  const [errorFirstNameSwitch, setErrorFirstNameSwitch] = useState("");
+  const [errorLastNameSwitch, setErrorLastNameSwitch] = useState("");
   const [errorEmailSwitch, setErrorEmailSwitch] = useState("");
+  const [errorConfirmEmailSwitch, setErrorConfirmEmailSwitch] = useState("");
   const [errorPasswordSwitch, setErrorPasswordSwitch] = useState("");
 
   const signupData = {
@@ -40,29 +47,53 @@ const Signup = (props) => {
   };
 
   const errors = {
+    emptyFirstName: props.intl.formatMessage({ id: "emptyFirstName" }),
+    emptyLastName: props.intl.formatMessage({ id: "emptyLastName" }),
     emptyEmail: props.intl.formatMessage({ id: "emptyEmail" }),
+    emptyConfirmEmail: props.intl.formatMessage({ id: "emptyConfirmEmail" }),
     emptyPassword: props.intl.formatMessage({ id: "emptyPassword" }),
-    wrongEmail: props.intl.formatMessage({ id: "wrongEmail" }),
-    wrongPassword: props.intl.formatMessage({ id: "wrongPassword" }),
+    noMatchEmail: props.intl.formatMessage({ id: "noMatchEmail" }),
+    passwordLength: props.intl.formatMessage({ id: "passwordLength" }),
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (firstName === "") {
+      setErrorFirstNameSwitch("empty");
+      setErrorFirstName(true);
+    } else {
+      setErrorFirstNameSwitch("");
+      setErrorFirstName(false);
+    }
+    if (lastName === "") {
+      setErrorLastNameSwitch("empty");
+      setErrorLastName(true);
+    } else {
+      setErrorLastNameSwitch("");
+      setErrorLastName(false);
+    }
     if (email === "") {
       setErrorEmailSwitch("empty");
-      setErrorEmail(true);
-    } else if (email !== "stefan@email.com") {
-      setErrorEmailSwitch("wrong");
       setErrorEmail(true);
     } else {
       setErrorEmailSwitch("");
       setErrorEmail(false);
     }
+    if (email !== "" && confirmEmail === "") {
+      setErrorConfirmEmailSwitch("empty");
+      setErrorConfirmEmail(true);
+    } else if (confirmEmail !== email) {
+      setErrorConfirmEmailSwitch("notMatch");
+      setErrorConfirmEmail(true);
+    } else {
+      setErrorConfirmEmailSwitch("");
+      setErrorConfirmEmail(false);
+    }
     if (password === "") {
       setErrorPasswordSwitch("empty");
       setErrorPassword(true);
-    } else if (password !== "123456") {
-      setErrorPasswordSwitch("wrong");
+    } else if (password.length < 7) {
+      setErrorPasswordSwitch("length");
       setErrorPassword(true);
     } else {
       setErrorPasswordSwitch("");
@@ -77,36 +108,37 @@ const Signup = (props) => {
       </Header>
       <Text className="formText">
         <FormattedMessage id="signupSubTextPart1" />
-        <Link onClick={() => localStorage.setItem("authPage", "login")}>
+        <CustomLink onClick={() => pageHandler("login")}>
           <FormattedMessage id="signupSubTextPart2" />
-        </Link>
+        </CustomLink>
+        <FormattedMessage id="dot" />
       </Text>
       <Input
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={(event) => setFirstName(event.target.value)}
         required={true}
         id="firstName"
         name="firstName"
         type="firstName"
         label={props.intl.formatMessage({ id: "firstName" })}
-        error={errorEmailSwitch && errorEmailSwitch}
+        error={errorFirstNameSwitch && errorFirstNameSwitch}
         helperText={
-          errorEmail &&
-          (errorEmailSwitch === "empty" ? errors.emptyEmail : errors.wrongEmail)
+          errorFirstName &&
+          errorFirstNameSwitch === "empty" &&
+          errors.emptyFirstName
         }
       />
       <Input
-        onChange={(event) => setPassword(event.target.value)}
+        onChange={(event) => setLastName(event.target.value)}
         required={true}
         id="lastName"
         name="lastName"
         type="lastName"
         label={props.intl.formatMessage({ id: "lastName" })}
-        error={errorPasswordSwitch && errorPasswordSwitch}
+        error={errorLastNameSwitch && errorLastNameSwitch}
         helperText={
-          errorPassword &&
-          (errorPasswordSwitch === "empty"
-            ? errors.emptyPassword
-            : errors.wrongPassword)
+          errorLastName &&
+          errorLastNameSwitch === "empty" &&
+          errors.emptyLastName
         }
       />
       <Input
@@ -118,21 +150,22 @@ const Signup = (props) => {
         label={props.intl.formatMessage({ id: "email" })}
         error={errorEmailSwitch && errorEmailSwitch}
         helperText={
-          errorEmail &&
-          (errorEmailSwitch === "empty" ? errors.emptyEmail : errors.wrongEmail)
+          errorEmail && errorEmailSwitch === "empty" && errors.emptyEmail
         }
       />
       <Input
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={(event) => setConfirmEmail(event.target.value)}
         required={true}
         id="email"
         name="email"
         type="email"
         label={props.intl.formatMessage({ id: "confirmEmail" })}
-        error={errorEmailSwitch && errorEmailSwitch}
+        error={errorConfirmEmailSwitch && errorConfirmEmailSwitch}
         helperText={
-          errorEmail &&
-          (errorEmailSwitch === "empty" ? errors.emptyEmail : errors.wrongEmail)
+          errorConfirmEmail &&
+          (errorConfirmEmailSwitch === "empty"
+            ? errors.emptyConfirmEmail
+            : errors.noMatchEmail)
         }
       />
       <Input
@@ -144,10 +177,9 @@ const Signup = (props) => {
         label={props.intl.formatMessage({ id: "password" })}
         error={errorPasswordSwitch && errorPasswordSwitch}
         helperText={
-          errorPassword &&
-          (errorPasswordSwitch === "empty"
+          errorPassword && errorPasswordSwitch === "empty"
             ? errors.emptyPassword
-            : errors.wrongPassword)
+            : errors.passwordLength
         }
       />
       <ButtonContainer>

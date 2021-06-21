@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Grid } from "@material-ui/core";
 
 export const Background = styled(Grid)`
-  height: 100vh;
+  height: calc(100vh - 250px);
   background-repeat: no-repeat;
   background-size: cover;
   background-color: #fff;

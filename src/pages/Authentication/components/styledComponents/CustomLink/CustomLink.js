@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ForgotPassword = styled.span`
+export const CustomLink = styled.span`
   font-size: 15px;
   color: #2068db;
   cursor: pointer;

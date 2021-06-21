@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const AuthContainer = styled.div`
-  margin: 6em auto 0 auto;
+  margin: 4em auto 0 auto;
   width: 1000px;
-  height: 600px;
+  height: 700px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
