@@ -1,4 +1,5 @@
 import { LOCALES } from "../locales";
+import UKFlag from "../../assets/flags/uk";
 
 export default {
   [LOCALES.ENGLISH]: {
@@ -43,5 +44,8 @@ export default {
       "You will receive a link to create a new password via email. ",
     recoverPasswordSubTextPart3: "You remembered your password? ",
     recoverPasswordSubTextPart4: "Return to the Log in page",
+    //Navbar
+    languageSwitchFlag: <UKFlag />,
+    languageSwitchText: "EN",
   },
 };

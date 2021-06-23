@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -26,22 +26,43 @@ const App = () => {
     localStorage.setItem("lang", LOCALES.SERBIAN_LAT);
   }
 
-  const [locale] = useState(
+  const [locale, setLocale] = useState(
     localStorage.getItem("lang")
       ? localStorage.getItem("lang")
       : LOCALES.SERBIAN_LAT
   );
 
+  const handleLanguageChange = (value) => {
+    localStorage.setItem("lang", value);
+    let req_lang = "";
+    if (value === "sr-lt") {
+      req_lang = "sr-RS";
+    } else if (value === "sr-cy") {
+      req_lang = "sr-Cyrl-RS";
+    } else {
+      req_lang = "en-US";
+    }
+    setLocale(value);
+  };
+
+  useEffect(() => {
+    console.log(locale);
+  }, [locale]);
+
   return (
     <I18nProvider locale={locale}>
       <div className="App">
         <Router>
-          <Navbar fill={"red"} />
+          <Navbar
+            fill={"red"}
+            locale={locale}
+            handleLanguageChange={handleLanguageChange}
+          />
           <Switch>
             <Route
               exact
               path="/authentication"
-              render={(props) => <Authentication {...props} />}
+              render={(props) => <Authentication locale={locale} {...props} />}
             />
           </Switch>
         </Router>

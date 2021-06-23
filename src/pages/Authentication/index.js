@@ -13,9 +13,14 @@ import { Background } from "../../components/styledComponents/Background/Backgro
 import { AuthContainer } from "./Welcome/components/styledComponents/AuthContainer/AuthContainer";
 
 const Authentication = (props) => {
+  const { locale, handleLanguageChange } = props;
   const [page, setPage] = useState("");
 
   const authPage = localStorage.getItem("authPage");
+
+  {
+    !authPage && localStorage.setItem("authPage", "signup");
+  }
 
   const pageHandler = (param) => {
     localStorage.setItem("authPage", param);
@@ -24,7 +29,8 @@ const Authentication = (props) => {
 
   useEffect(() => {
     setPage(authPage);
-  }, [page]);
+    console.log(locale);
+  }, [page, locale]);
 
   return (
     <Background container>
